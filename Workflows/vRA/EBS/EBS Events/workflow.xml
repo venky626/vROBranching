@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:workflow xmlns:ns2="http://vmware.com/vco/workflow" root-name="item1" object-name="workflow:name=generic" id="733b1496-e872-4037-bbd3-b9ad32939f0c" editor-version="1.6" version="1.0.0" api-version="6.0.0" allowed-operations="evf" restartMode="1" resumeFromFailedMode="0">
+    <display-name>EBS Events</display-name>
+    <description>Logs details of EBS event subscription</description>
+    <position y="50.0" x="100.0"/>
+    <input>
+        <param name="inputProperties" type="Properties"/>
+    </input>
+    <output/>
+    <attrib name="__tokenName" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <workflow-item name="item0" type="end" end-mode="0" comparator="0">
+        <in-binding/>
+        <out-binding/>
+        <position y="45.40909090909091" x="524.5"/>
+    </workflow-item>
+    <workflow-item name="item1" out-name="item2" type="task" comparator="0">
+        <display-name>init</display-name>
+        <script encoded="false">
+var eventTopicId = System.getContext().getParameter("__metadata_eventTopicId");
+var sourceType = System.getContext().getParameter("__metadata_sourceType");
+var targetType = System.getContext().getParameter("__metadata_targetType");
+var userName = System.getContext().getParameter("__metadata_userName");
+
+var __tokenName=eventTopicId+" : "+targetType+" : "+sourceType+" : "+userName;
+
+System.log(__tokenName);</script>
+        <in-binding>
+            <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+        </in-binding>
+        <out-binding>
+            <bind name="__tokenName" type="string" export-name="__tokenName"/>
+        </out-binding>
+        <position y="55.40909090909091" x="204.5"/>
+    </workflow-item>
+    <workflow-item name="item2" out-name="item0" type="multiple" comparator="0">
+        <display-name>__token EBS Events</display-name>
+        <in-binding/>
+        <out-binding/>
+        <workflow-subelements-list>
+            <workflow-subelement name="item0" linked-workflow-id="3ed93e51-4f9d-41f0-beed-d6d10a78034e">
+                <display-name>__token EBS Events</display-name>
+                <in-binding>
+                    <bind name="__tokenName" type="string" export-name="__tokenName"/>
+                    <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+                </in-binding>
+                <out-binding/>
+            </workflow-subelement>
+        </workflow-subelements-list>
+        <position y="55.90909090909091" x="345.0"/>
+    </workflow-item>
+    <presentation>
+        <p-param name="inputProperties">
+            <desc>inputProperties</desc>
+        </p-param>
+    </presentation>
+</ns2:workflow>
